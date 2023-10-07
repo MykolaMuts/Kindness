@@ -63,8 +63,7 @@ public class FirstFragment extends Fragment {
                 ArrayList<Event> events = new ArrayList<>();
 
                 for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
-                    System.out.println(eventSnapshot.exists());
-                    Event event = eventSnapshot.getValue(Event.class);
+                    Event event = new Event(eventSnapshot);
                     events.add(event);
                 }
 
