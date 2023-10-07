@@ -1,6 +1,8 @@
 package com.project.logic;
 
-public class Event {
+import java.io.Serializable;
+
+public class Event implements Serializable {
     private String title;
     private String description;
     private String time;

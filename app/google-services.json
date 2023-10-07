@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "386522146501",
+    "firebase_url": "https://kindness-4780c-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "kindness-4780c",
+    "storage_bucket": "kindness-4780c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:386522146501:android:5855bb4e30518dd56332ac",
+        "android_client_info": {
+          "package_name": "com.project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNLf7yQm2_jDXWcm1nSB6bh1SaOCwBiLw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

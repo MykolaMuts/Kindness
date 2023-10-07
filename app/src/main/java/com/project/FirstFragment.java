@@ -10,6 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.project.databinding.FragmentFirstBinding;
 import com.project.logic.Event;
 import com.project.logic.EventAdapter;
@@ -20,6 +25,7 @@ public class FirstFragment extends Fragment {
 
     private FragmentFirstBinding binding;
     private ListView eventListView;
+    private EventAdapter eventAdapter;
 
     @Override
     public View onCreateView(
@@ -35,26 +41,41 @@ public class FirstFragment extends Fragment {
 
         eventListView = view.findViewById(R.id.eventList);
 
-//        // Create mock data for events
-//        ArrayList<String> eventTitles = new ArrayList<>();
-//        eventTitles.add("Event 1");
-//        eventTitles.add("Event 2");
-//        eventTitles.add("Event 3");
-
-        // Create mock event data
-        ArrayList<Event> events = new ArrayList<>();
-        events.add(new Event("Lost my cat", "Lost a cat yesterday, it's black with white paws and a collar", "20 minutes ago", "2 km"));
-
-        // Create an ArrayAdapter to display the event data in the ListView
-//        ArrayAdapter<Event> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, events);
-        EventAdapter adapter = new EventAdapter(requireContext(), events);
-        eventListView.setAdapter(adapter);
+        // Initialize the custom EventAdapter
+        eventAdapter = new EventAdapter(requireContext(), new ArrayList<>());
+        eventListView.setAdapter(eventAdapter);
 
         binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(FirstFragment.this)
                         .navigate(R.id.action_FirstFragment_to_SecondFragment);
+            }
+        });
+
+        // Get a reference to the Firebase database
+        DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference("events");
+
+        // Attach a listener to retrieve events from Firebase
+        eventsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<Event> events = new ArrayList<>();
+
+                for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
+                    System.out.println(eventSnapshot.exists());
+                    Event event = eventSnapshot.getValue(Event.class);
+                    events.add(event);
+                }
+
+                eventAdapter.clear();
+                eventAdapter.addAll(events);
+                eventAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle any errors here
             }
         });
     }

@@ -1,32 +1,44 @@
 package com.project;
 
 import android.os.Bundle;
-
-import com.google.android.material.snackbar.Snackbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.view.View;
-
-import androidx.core.view.WindowCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.project.databinding.ActivityMainBinding;
+import com.project.logic.Event;
 
-import android.view.Menu;
-import android.view.MenuItem;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
 
+    private ArrayList<Event> events = new ArrayList<>();
+
+    private ArrayAdapter<Event> eventAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Initialize Firebase
+        FirebaseApp.initializeApp(this);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference eventsRef = database.getReference("events");
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -75,4 +87,16 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+    public ArrayList<Event> getEvents() {
+        return events;
+    }
+
+    public ArrayAdapter<Event> getEventAdapter() {
+        if (eventAdapter == null) {
+            eventAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, events);
+        }
+        return eventAdapter;
+    }
+
 }
