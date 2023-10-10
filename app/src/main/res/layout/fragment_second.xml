@@ -22,49 +22,70 @@
 
         <EditText
             android:id="@+id/pt_eventTitle"
-            android:layout_width="181dp"
-            android:layout_height="76dp"
-            android:layout_marginStart="16dp"
+            android:layout_width="156dp"
+            android:layout_height="71dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="20dp"
             android:ems="10"
             android:inputType="text"
             android:text="Name"
-            app:layout_constraintBottom_toTopOf="@+id/pt_eventDescription"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_second"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/button_second" />
 
         <EditText
             android:id="@+id/pt_eventDescription"
-            android:layout_width="264dp"
-            android:layout_height="91dp"
-            android:layout_marginStart="128dp"
-            android:layout_marginBottom="4dp"
+            android:layout_width="371dp"
+            android:layout_height="121dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="84dp"
+            android:layout_marginEnd="8dp"
             android:ems="10"
             android:inputType="text"
-            android:text="Name"
-            app:layout_constraintBottom_toTopOf="@+id/pl_eventTime"
+            android:text="@string/description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.333"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/pt_eventTitle" />
 
         <EditText
             android:id="@+id/pl_eventTime"
-            android:layout_width="238dp"
-            android:layout_height="110dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="32dp"
+            android:layout_width="122dp"
+            android:layout_height="73dp"
+            android:layout_marginStart="44dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="28dp"
             android:ems="10"
             android:inputType="text"
-            android:text="Name"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pt_eventDescription" />
+            android:text="@string/add"
+            app:layout_constraintBottom_toTopOf="@+id/button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/pt_eventTitle"
+            app:layout_constraintTop_toBottomOf="@+id/button_second"
+            app:layout_constraintVertical_bias="0.0" />
 
         <Button
             android:id="@+id/addButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
             android:text="@string/add"
             app:layout_constraintEnd_toEndOf="@+id/button_second"
-            app:layout_constraintTop_toBottomOf="@+id/pl_eventTime" />
+            app:layout_constraintHorizontal_bias="0.437"
+            app:layout_constraintStart_toStartOf="@+id/button_second"
+            app:layout_constraintTop_toBottomOf="@+id/pt_eventDescription" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="165dp"
+            android:layout_height="66dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/set_location"
+            app:layout_constraintBottom_toTopOf="@+id/pt_eventDescription"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pt_eventTitle" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

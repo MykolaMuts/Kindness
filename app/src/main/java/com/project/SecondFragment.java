@@ -36,15 +36,12 @@ public class SecondFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        eventTitleEditText = view.findViewById(R.id.pt_eventTitle);
-        eventDescriptionEditText = view.findViewById(R.id.pt_eventDescription);
-        eventTimeEditText = view.findViewById(R.id.pl_eventTime);
+        initializeViews(view);
 
         binding.buttonSecond.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavHostFragment.findNavController(SecondFragment.this)
-                        .navigate(R.id.action_SecondFragment_to_FirstFragment);
+                navigateToFirstFragment();
             }
         });
 
@@ -52,37 +49,74 @@ public class SecondFragment extends Fragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Get the event details from the EditText fields
-                String eventTitle = eventTitleEditText.getText().toString();
-                String eventDescription = eventDescriptionEditText.getText().toString();
-                String eventTime = eventTimeEditText.getText().toString();
-
-                // Check if any of the fields are empty
-                if (eventTitle.isEmpty() || eventDescription.isEmpty() || eventTime.isEmpty()) {
-                    Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                // Create a new Event object
-                Event newEvent = new Event(eventTitle, eventDescription, eventTime, "100 m");
-
-                // Get a reference to the Firebase database
-                DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference("events");
-
-                // Generate a unique key for the event
-                String eventId = eventsRef.push().getKey();
-
-                // Push the event data to Firebase
-                eventsRef.child(eventId).setValue(newEvent);
-
-                // Clear the input fields
-                eventTitleEditText.setText("");
-                eventDescriptionEditText.setText("");
-                eventTimeEditText.setText("");
-
-                Toast.makeText(requireContext(), "Event added to Firebase", Toast.LENGTH_SHORT).show();
+                addEventToFirebase();
             }
         });
+
+        // Add an OnClickListener to open the set_location.xml when the "Button" is clicked
+        Button locationButton = view.findViewById(R.id.button);
+        locationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navigateToSetLocationFragment();
+            }
+
+            private void navigateToSetLocationFragment() {
+                NavHostFragment.findNavController(SecondFragment.this)
+                        .navigate(R.id.action_SecondFragment_to_setLocationFragment);
+            }
+        });
+    }
+
+    private void initializeViews(View view) {
+        eventTitleEditText = view.findViewById(R.id.pt_eventTitle);
+        eventDescriptionEditText = view.findViewById(R.id.pt_eventDescription);
+        eventTimeEditText = view.findViewById(R.id.pl_eventTime);
+    }
+
+    private void navigateToFirstFragment() {
+        NavHostFragment.findNavController(SecondFragment.this)
+                .navigate(R.id.action_SecondFragment_to_FirstFragment);
+    }
+
+    private void addEventToFirebase() {
+        // Get the event details from the EditText fields
+        String eventTitle = eventTitleEditText.getText().toString();
+        String eventDescription = eventDescriptionEditText.getText().toString();
+        String eventTime = eventTimeEditText.getText().toString();
+
+        // Check if any of the fields are empty
+        if (eventTitle.isEmpty() || eventDescription.isEmpty() || eventTime.isEmpty()) {
+            showToast("Please fill in all fields");
+            return;
+        }
+
+        // Create a new Event object
+        Event newEvent = new Event(eventTitle, eventDescription, eventTime, "100 m");
+
+        // Get a reference to the Firebase database
+        DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference("events");
+
+        // Generate a unique key for the event
+        String eventId = eventsRef.push().getKey();
+
+        // Push the event data to Firebase
+        eventsRef.child(eventId).setValue(newEvent);
+
+        // Clear the input fields
+        clearInputFields();
+
+        showToast("Event added to Firebase");
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void clearInputFields() {
+        eventTitleEditText.setText("");
+        eventDescriptionEditText.setText("");
+        eventTimeEditText.setText("");
     }
 
     @Override

@@ -24,5 +24,15 @@
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
+
+        <action
+            android:id="@+id/action_SecondFragment_to_setLocationFragment"
+            app:destination="@id/setLocationFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/setLocationFragment"
+        android:name="com.project.SetLocationFragment"
+        android:label="Set Location"
+        tools:layout="@layout/set_location" />
 </navigation>
