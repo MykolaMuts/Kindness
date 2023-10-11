@@ -1,5 +1,7 @@
 package com.project.logic;
 
+import android.location.Location;
+
 import com.google.firebase.database.DataSnapshot;
 
 import java.io.Serializable;
@@ -8,24 +10,24 @@ public class Event implements Serializable {
     private String title;
     private String description;
     private String time;
-    private String distance;
     private double latitude;
     private double longitude;
 
-    public Event(String title, String description, String time, String distance) {
+    public Event(String title, String description, String time, double latitude, double longitude) {
         this.title = title;
         this.description = description;
         this.time = time;
-        this.distance = distance;
-    }
-
-    public Event(String title, String description, String time, String distance, Double latitude, Double longitude) {
-        this.title = title;
-        this.description = description;
-        this.time = time;
-        this.distance = distance;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public Event(String title, String description, String time) {
+        this.title = title;
+        this.description = description;
+        this.time = time;
+    }
+
+    public Event() {
     }
 
     // Constructor for Firebase
@@ -39,11 +41,13 @@ public class Event implements Serializable {
         if (dataSnapshot.child("time").exists()) {
             this.time = dataSnapshot.child("time").getValue(String.class);
         }
-        if (dataSnapshot.child("distance").exists()) {
-            this.distance = dataSnapshot.child("distance").getValue(String.class);
-        }
+//        if (dataSnapshot.child("time").exists()) {
+//            this.time = dataSnapshot.child("time").getValue(String.class);
+//        }
+//        if (dataSnapshot.child("time").exists()) {
+//            this.time = dataSnapshot.child("time").getValue(String.class);
+//        }
     }
-
 
     public void setLatitude(double latitude) {
         this.latitude = latitude;
@@ -52,6 +56,36 @@ public class Event implements Serializable {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public float calculateDistance(double userLatitude, double userLongitude) {
+        Location userLocation = new Location("");
+        userLocation.setLatitude(userLatitude);
+        userLocation.setLongitude(userLongitude);
+
+        Location eventLocation = new Location("");
+        eventLocation.setLatitude(latitude);
+        eventLocation.setLongitude(longitude);
+
+        return userLocation.distanceTo(eventLocation);
+    }
+
+    public String getDistanceString(double userLatitude, double userLongitude) {
+        float distance = calculateDistance(userLatitude, userLongitude);
+        if (distance < 1000) {
+            return String.format("%.1f m", distance);
+        } else {
+            return String.format("%.2f km", distance / 1000);
+        }
+    }
+
     public String getTitle() {
         return title;
     }
@@ -62,9 +96,5 @@ public class Event implements Serializable {
 
     public String getTime() {
         return time;
-    }
-
-    public String getDistance() {
-        return distance;
     }
 }

@@ -12,17 +12,25 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.project.databinding.FragmentSecondBinding;
+import com.project.firebase.SaveEvent;
 import com.project.logic.Event;
 
 public class SecondFragment extends Fragment {
+
+    private double userLatitude;
+    private double userLongitude;
+
+    private Event event;
 
     private FragmentSecondBinding binding;
     private EditText eventTitleEditText;
     private EditText eventDescriptionEditText;
     private EditText eventTimeEditText;
+
+    private Button addButton;
+
+    private Button setLocationButton;
 
     @Override
     public View onCreateView(
@@ -53,17 +61,11 @@ public class SecondFragment extends Fragment {
             }
         });
 
-        // Add an OnClickListener to open the set_location.xml when the "Button" is clicked
-        Button locationButton = view.findViewById(R.id.button);
+        Button locationButton = view.findViewById(R.id.setLocationButton);
         locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 navigateToSetLocationFragment();
-            }
-
-            private void navigateToSetLocationFragment() {
-                NavHostFragment.findNavController(SecondFragment.this)
-                        .navigate(R.id.action_SecondFragment_to_setLocationFragment);
             }
         });
     }
@@ -79,6 +81,18 @@ public class SecondFragment extends Fragment {
                 .navigate(R.id.action_SecondFragment_to_FirstFragment);
     }
 
+    private void navigateToSetLocationFragment() {
+
+        NavHostFragment.findNavController(SecondFragment.this)
+                .navigate(R.id.action_SecondFragment_to_setLocationFragment);
+//
+//        requireActivity().getSupportFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.action_SecondFragment_to_setLocationFragment, new SetLocationFragment())
+//                .addToBackStack(null)
+//                .commit();
+    }
+
     private void addEventToFirebase() {
         // Get the event details from the EditText fields
         String eventTitle = eventTitleEditText.getText().toString();
@@ -91,20 +105,19 @@ public class SecondFragment extends Fragment {
             return;
         }
 
+        // Check if location is set
+        if (userLatitude == 0.0 || userLongitude == 0.0) {
+            showToast("Please set the location before adding the event");
+            return;
+        }
+
         // Create a new Event object
-        Event newEvent = new Event(eventTitle, eventDescription, eventTime, "100 m");
-
-        // Get a reference to the Firebase database
-        DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference("events");
-
-        // Generate a unique key for the event
-        String eventId = eventsRef.push().getKey();
-
-        // Push the event data to Firebase
-        eventsRef.child(eventId).setValue(newEvent);
+        event = new Event(eventTitle, eventDescription, eventTime);
 
         // Clear the input fields
         clearInputFields();
+
+        SaveEvent.saveEventToFirebase(event, userLatitude, userLongitude);
 
         showToast("Event added to Firebase");
     }
@@ -125,3 +138,6 @@ public class SecondFragment extends Fragment {
         binding = null;
     }
 }
+
+
+

@@ -41,7 +41,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
             eventTitle.setText(event.getTitle());
             eventDescription.setText(event.getDescription());
             eventTime.setText("Time: " + event.getTime());
-            eventDistance.setText("Distance: " + event.getDistance());
+            eventDistance.setText("Distance: " + event.getDistanceString(event.getLatitude(),event.getLongitude()));
         }
 
         // Return the completed view to render on screen

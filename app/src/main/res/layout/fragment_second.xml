@@ -57,7 +57,7 @@
             android:ems="10"
             android:inputType="text"
             android:text="@string/add"
-            app:layout_constraintBottom_toTopOf="@+id/button"
+            app:layout_constraintBottom_toTopOf="@+id/setLocationButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/pt_eventTitle"
@@ -76,7 +76,7 @@
             app:layout_constraintTop_toBottomOf="@+id/pt_eventDescription" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/setLocationButton"
             android:layout_width="165dp"
             android:layout_height="66dp"
             android:layout_marginTop="8dp"
