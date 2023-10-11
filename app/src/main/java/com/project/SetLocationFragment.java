@@ -21,7 +21,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.project.logic.Event;
 
 public class SetLocationFragment extends Fragment implements OnMapReadyCallback {
@@ -33,10 +32,6 @@ public class SetLocationFragment extends Fragment implements OnMapReadyCallback 
     private FusedLocationProviderClient fusedLocationClient;
     private Event event;
 
-    private Double userLatitude;
-
-    private Double userLongitude;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.set_location, container, false);
@@ -47,19 +42,22 @@ public class SetLocationFragment extends Fragment implements OnMapReadyCallback 
 
         mapView.getMapAsync(this);
 
-        event = new Event();
-
         Button saveLocationButton = view.findViewById(R.id.saveLocationButton);
         saveLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (selectedLatLng != null) {
+                    event = new Event(); // Create the Event object
                     event.setLatitude(selectedLatLng.latitude);
                     event.setLongitude(selectedLatLng.longitude);
-                    showToast("Location saved " + event.getLatitude() + " ; " + event.getLongitude());
+                    showToast("Location saved");
 
+                    // Pass the updated Event back to the SecondFragment
+                    Bundle result = new Bundle();
+                    result.putSerializable("event", event);
+                    getParentFragmentManager().setFragmentResult("locationResult", result);
 
-                    requireActivity().getSupportFragmentManager().popBackStack();
+                    //requireActivity().getSupportFragmentManager().popBackStack();
                 } else {
                     showToast("Please select a location");
                 }
@@ -100,18 +98,15 @@ public class SetLocationFragment extends Fragment implements OnMapReadyCallback 
     private void checkAndSetDefaultLocation() {
         if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationClient.getLastLocation()
-                    .addOnSuccessListener(requireActivity(), new OnSuccessListener<android.location.Location>() {
-                        @Override
-                        public void onSuccess(android.location.Location location) {
-                            if (location != null) {
-                                selectedLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-                            } else {
-                                selectedLatLng = new LatLng(52.409538, 16.931992); // Poznan coordinates
-                            }
+                    .addOnSuccessListener(requireActivity(), location -> {
+                        if (location != null) {
+                            selectedLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                        } else {
+                            selectedLatLng = new LatLng(52.409538, 16.931992); // Poznan coordinates
+                        }
 
-                            if (mMap != null) {
-                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(selectedLatLng, 15f));
-                            }
+                        if (mMap != null) {
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(selectedLatLng, 15f));
                         }
                     });
         } else {

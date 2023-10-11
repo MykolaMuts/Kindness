@@ -9,7 +9,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.project.databinding.FragmentSecondBinding;
@@ -18,8 +20,8 @@ import com.project.logic.Event;
 
 public class SecondFragment extends Fragment {
 
-    private double userLatitude;
-    private double userLongitude;
+    private double eventLatitude;
+    private double eventLongitude;
 
     private Event event;
 
@@ -70,6 +72,23 @@ public class SecondFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        getParentFragmentManager().setFragmentResultListener("locationResult", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                if (requestKey.equals("locationResult")) {
+                    event = (Event) result.getSerializable("event");
+                    eventLatitude = event.getLatitude();
+                    eventLongitude = event.getLongitude();
+
+                }
+            }
+        });
+    }
+
     private void initializeViews(View view) {
         eventTitleEditText = view.findViewById(R.id.pt_eventTitle);
         eventDescriptionEditText = view.findViewById(R.id.pt_eventDescription);
@@ -106,7 +125,7 @@ public class SecondFragment extends Fragment {
         }
 
         // Check if location is set
-        if (userLatitude == 0.0 || userLongitude == 0.0) {
+        if (eventLatitude == 0.0 || eventLongitude == 0.0) {
             showToast("Please set the location before adding the event");
             return;
         }
@@ -117,7 +136,7 @@ public class SecondFragment extends Fragment {
         // Clear the input fields
         clearInputFields();
 
-        SaveEvent.saveEventToFirebase(event, userLatitude, userLongitude);
+        SaveEvent.saveEventToFirebase(event, eventLatitude, eventLongitude);
 
         showToast("Event added to Firebase");
     }
@@ -138,6 +157,3 @@ public class SecondFragment extends Fragment {
         binding = null;
     }
 }
-
-
-
