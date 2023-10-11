@@ -8,8 +8,8 @@
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapViewFull"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="412dp"
-        android:layout_height="647dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:contentDescription="@string/set_location"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
