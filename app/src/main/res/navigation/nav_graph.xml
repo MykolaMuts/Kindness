@@ -41,7 +41,7 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.project.LoginFragment"
-        android:label="login"
+        android:label="Login"
         tools:layout="@layout/login" >
         <action
             android:id="@+id/action_loginFragment_to_registrationFragment"
@@ -53,7 +53,7 @@
     <fragment
         android:id="@+id/registrationFragment"
         android:name="com.project.RegistrationFragment"
-        android:label="registration"
+        android:label="Registration"
         tools:layout="@layout/registration" >
         <action
             android:id="@+id/action_registrationFragment_to_loginFragment"
@@ -62,6 +62,6 @@
     <fragment
         android:id="@+id/eventDetailsFragment"
         android:name="com.project.EventDetailsFragment"
-        android:label="event_details"
+        android:label="Details"
         tools:layout="@layout/event_details" />
 </navigation>
