@@ -15,14 +15,21 @@ import com.project.R;
 import java.util.ArrayList;
 
 public class EventAdapter extends ArrayAdapter<Event> {
+    private double userLatitude;
+    private double userLongitude;
+
     public EventAdapter(Context context, ArrayList<Event> events) {
         super(context, 0, events);
+    }
+
+    public void setUserLocation(double userLatitude, double userLongitude) {
+        this.userLatitude = userLatitude;
+        this.userLongitude = userLongitude;
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        // Get the data item for this position
         Event event = getItem(position);
 
         // Check if an existing view is being reused, otherwise inflate the view
@@ -30,21 +37,21 @@ public class EventAdapter extends ArrayAdapter<Event> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_event, parent, false);
         }
 
-        // Lookup view for data population
         TextView eventTitle = convertView.findViewById(R.id.eventTitle);
         TextView eventDescription = convertView.findViewById(R.id.eventDescription);
         TextView eventTime = convertView.findViewById(R.id.eventTime);
         TextView eventDistance = convertView.findViewById(R.id.eventDistance);
 
-        // Populate the data into the template view using the data object
         if (event != null) {
             eventTitle.setText(event.getTitle());
             eventDescription.setText(event.getDescription());
             eventTime.setText("Time: " + event.getTime());
-            eventDistance.setText("Distance: " + event.getDistanceString(event.getLatitude(),event.getLongitude()));
+
+            // Calculate and set the distance using user's location
+            eventDistance.setText("Distance: " + event.getDistanceString(userLatitude, userLongitude));
         }
 
-        // Return the completed view to render on screen
         return convertView;
     }
 }
+

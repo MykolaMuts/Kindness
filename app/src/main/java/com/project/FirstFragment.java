@@ -1,5 +1,8 @@
 package com.project;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,9 +10,13 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +34,10 @@ public class FirstFragment extends Fragment {
     private ListView eventListView;
     private EventAdapter eventAdapter;
 
+    private FusedLocationProviderClient fusedLocationClient;
+    private double userLatitude;
+    private double userLongitude;
+
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -39,10 +50,12 @@ public class FirstFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        getUserLocation();
+
         eventListView = view.findViewById(R.id.eventList);
 
-        // Initialize the custom EventAdapter
         eventAdapter = new EventAdapter(requireContext(), new ArrayList<>());
+
         eventListView.setAdapter(eventAdapter);
 
         binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
@@ -53,10 +66,8 @@ public class FirstFragment extends Fragment {
             }
         });
 
-        // Get a reference to the Firebase database
         DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference("events");
 
-        // Attach a listener to retrieve events from Firebase
         eventsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -74,9 +85,27 @@ public class FirstFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle any errors here
+
             }
         });
+    }
+
+    private void getUserLocation() {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
+
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient.getLastLocation().addOnSuccessListener(requireActivity(), new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    if (location != null) {
+                        userLatitude = location.getLatitude();
+                        userLongitude = location.getLongitude();
+
+                        eventAdapter.setUserLocation(userLatitude, userLongitude);
+                    }
+                }
+            });
+        }
     }
 
     @Override

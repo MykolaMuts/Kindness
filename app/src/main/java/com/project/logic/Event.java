@@ -41,12 +41,12 @@ public class Event implements Serializable {
         if (dataSnapshot.child("time").exists()) {
             this.time = dataSnapshot.child("time").getValue(String.class);
         }
-//        if (dataSnapshot.child("time").exists()) {
-//            this.time = dataSnapshot.child("time").getValue(String.class);
-//        }
-//        if (dataSnapshot.child("time").exists()) {
-//            this.time = dataSnapshot.child("time").getValue(String.class);
-//        }
+        if (dataSnapshot.child("latitude").exists()) {
+            this.latitude = dataSnapshot.child("latitude").getValue(Double.class);
+        }
+        if (dataSnapshot.child("longitude").exists()) {
+            this.longitude = dataSnapshot.child("longitude").getValue(Double.class);
+        }
     }
 
     public void setLatitude(double latitude) {

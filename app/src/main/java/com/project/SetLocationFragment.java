@@ -97,24 +97,17 @@ public class SetLocationFragment extends Fragment implements OnMapReadyCallback 
 
     private void checkAndSetDefaultLocation() {
         if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            fusedLocationClient.getLastLocation()
-                    .addOnSuccessListener(requireActivity(), location -> {
-                        if (location != null) {
-                            selectedLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-                        } else {
-                            selectedLatLng = new LatLng(52.409538, 16.931992); // Poznan coordinates
-                        }
+            fusedLocationClient.getLastLocation().addOnSuccessListener(requireActivity(), location -> {
+                if (location != null) {
+                    selectedLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                } else {
+                    selectedLatLng = new LatLng(52.409538, 16.931992); // Poznan coordinates
+                }
 
-                        if (mMap != null) {
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(selectedLatLng, 15f));
-                        }
-                    });
-        } else {
-            selectedLatLng = new LatLng(52.409538, 16.931992);
-
-            if (mMap != null) {
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(selectedLatLng, 15f));
-            }
+                if (mMap != null) {
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(selectedLatLng, 15f));
+                }
+            });
         }
     }
 
