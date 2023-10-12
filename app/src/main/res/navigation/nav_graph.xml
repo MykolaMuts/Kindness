@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/eventsFragment"
         android:name="com.project.EventsFragment"
-        android:label="@string/first_fragment_label"
+        android:label="@string/events"
         tools:layout="@layout/events">
 
         <action
@@ -21,7 +21,7 @@
     <fragment
         android:id="@+id/addEventFragment"
         android:name="com.project.AddEventFragment"
-        android:label="@string/second_fragment_label"
+        android:label="@string/create"
         tools:layout="@layout/add_event">
 
         <action

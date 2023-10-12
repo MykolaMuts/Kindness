@@ -48,13 +48,6 @@ public class AddEventFragment extends Fragment {
 
         initializeViews(view);
 
-        binding.buttonSecond.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                navigateToFirstFragment();
-            }
-        });
-
         Button addButton = view.findViewById(R.id.addButton);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
