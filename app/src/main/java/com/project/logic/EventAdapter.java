@@ -1,6 +1,8 @@
 package com.project.logic;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.project.R;
 
@@ -17,9 +21,11 @@ import java.util.ArrayList;
 public class EventAdapter extends ArrayAdapter<Event> {
     private double userLatitude;
     private double userLongitude;
+    private Context context;
 
     public EventAdapter(Context context, ArrayList<Event> events) {
         super(context, 0, events);
+        this.context = context;
     }
 
     public void setUserLocation(double userLatitude, double userLongitude) {
@@ -30,9 +36,8 @@ public class EventAdapter extends ArrayAdapter<Event> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        Event event = getItem(position);
+        final Event event = getItem(position);
 
-        // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_event, parent, false);
         }
@@ -47,11 +52,27 @@ public class EventAdapter extends ArrayAdapter<Event> {
             eventDescription.setText(event.getDescription());
             eventTime.setText("Time: " + event.getTime());
 
-            // Calculate and set the distance using user's location
             eventDistance.setText("Distance: " + event.getDistanceString(userLatitude, userLongitude));
+
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    navigateToEventDetails(event);
+                }
+            });
         }
 
         return convertView;
     }
+
+    private void navigateToEventDetails(Event event) {
+        NavController navController = Navigation.findNavController((Activity) context, R.id.eventDescription);
+
+        Bundle args = new Bundle();
+        args.putSerializable("event", event);
+
+        navController.navigate(R.id.action_FirstFragment_to_eventDetailsFragment, args);
+    }
 }
+
 

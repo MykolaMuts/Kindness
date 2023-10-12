@@ -118,19 +118,16 @@ public class SecondFragment extends Fragment {
         String eventDescription = eventDescriptionEditText.getText().toString();
         String eventTime = eventTimeEditText.getText().toString();
 
-        // Check if any of the fields are empty
         if (eventTitle.isEmpty() || eventDescription.isEmpty() || eventTime.isEmpty()) {
             showToast("Please fill in all fields");
             return;
         }
 
-        // Check if location is set
         if (eventLatitude == 0.0 || eventLongitude == 0.0) {
             showToast("Please set the location before adding the event");
             return;
         }
 
-        // Create a new Event object
         event = new Event(eventTitle, eventDescription, eventTime);
 
         // Clear the input fields

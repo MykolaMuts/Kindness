@@ -87,15 +87,12 @@ public class RegistrationFragment extends Fragment {
     }
 
     private void saveUserData(String email) {
-        // Get the registered user's unique ID
         String userId = firebaseAuth.getCurrentUser().getUid();
 
-        // Create a reference to the "users" node in the Realtime Database
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
 
-        // Create a new child node with the user's unique ID and set user data
-        User user = new User(email); // Create a User object with the required data
-        usersRef.child(userId).setValue(user); // Save the user object
+        User user = new User(email);
+        usersRef.child(userId).setValue(user);
     }
 
     private void showToast(String message) {
