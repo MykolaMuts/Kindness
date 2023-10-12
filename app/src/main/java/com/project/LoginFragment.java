@@ -74,7 +74,7 @@ public class LoginFragment extends Fragment {
                         if (task.isSuccessful()) {
                             showToast("Login successful");
                             NavHostFragment.findNavController(LoginFragment.this)
-                                    .navigate(R.id.action_loginFragment_to_FirstFragment);
+                                    .navigate(R.id.action_loginFragment_to_eventsFragment);
                         } else {
                             showToast("Login failed. Please check your credentials.");
                         }

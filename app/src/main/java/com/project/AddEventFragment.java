@@ -14,18 +14,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.project.databinding.FragmentSecondBinding;
+import com.project.databinding.AddEventBinding;
 import com.project.firebase.SaveEvent;
 import com.project.logic.Event;
 
-public class SecondFragment extends Fragment {
+public class AddEventFragment extends Fragment {
 
     private double eventLatitude;
     private double eventLongitude;
 
     private Event event;
 
-    private FragmentSecondBinding binding;
+    private AddEventBinding binding;
     private EditText eventTitleEditText;
     private EditText eventDescriptionEditText;
     private EditText eventTimeEditText;
@@ -39,7 +39,7 @@ public class SecondFragment extends Fragment {
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-        binding = FragmentSecondBinding.inflate(inflater, container, false);
+        binding = AddEventBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -96,14 +96,14 @@ public class SecondFragment extends Fragment {
     }
 
     private void navigateToFirstFragment() {
-        NavHostFragment.findNavController(SecondFragment.this)
-                .navigate(R.id.action_SecondFragment_to_FirstFragment);
+        NavHostFragment.findNavController(AddEventFragment.this)
+                .navigate(R.id.action_addEventFragment_to_eventsFragment);
     }
 
     private void navigateToSetLocationFragment() {
 
-        NavHostFragment.findNavController(SecondFragment.this)
-                .navigate(R.id.action_SecondFragment_to_setLocationFragment);
+        NavHostFragment.findNavController(AddEventFragment.this)
+                .navigate(R.id.action_addEventFragment_to_setLocationFragment);
 //
 //        requireActivity().getSupportFragmentManager()
 //                .beginTransaction()

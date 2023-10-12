@@ -71,7 +71,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
         Bundle args = new Bundle();
         args.putSerializable("event", event);
 
-        navController.navigate(R.id.action_FirstFragment_to_eventDetailsFragment, args);
+        navController.navigate(R.id.action_eventsFragment_to_eventDetailsFragment, args);
     }
 }
 

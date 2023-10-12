@@ -6,31 +6,31 @@
     app:startDestination="@id/registrationFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.project.FirstFragment"
+        android:id="@+id/eventsFragment"
+        android:name="com.project.EventsFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        tools:layout="@layout/events">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_eventsFragment_to_addEventFragment"
+            app:destination="@id/addEventFragment" />
         <action
-            android:id="@+id/action_FirstFragment_to_eventDetailsFragment"
+            android:id="@+id/action_eventsFragment_to_eventDetailsFragment"
             app:destination="@id/eventDetailsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.project.SecondFragment"
+        android:id="@+id/addEventFragment"
+        android:name="com.project.AddEventFragment"
         android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        tools:layout="@layout/add_event">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
-
-        <action
-            android:id="@+id/action_SecondFragment_to_setLocationFragment"
+            android:id="@+id/action_addEventFragment_to_setLocationFragment"
             app:destination="@id/setLocationFragment" />
+        <action
+            android:id="@+id/action_addEventFragment_to_eventsFragment"
+            app:destination="@id/eventsFragment" />
+
     </fragment>
 
     <fragment
@@ -44,11 +44,11 @@
         android:label="login"
         tools:layout="@layout/login" >
         <action
-            android:id="@+id/action_loginFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
-        <action
             android:id="@+id/action_loginFragment_to_registrationFragment"
             app:destination="@id/registrationFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_eventsFragment"
+            app:destination="@id/eventsFragment" />
     </fragment>
     <fragment
         android:id="@+id/registrationFragment"

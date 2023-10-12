@@ -22,15 +22,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.project.databinding.FragmentFirstBinding;
+import com.project.databinding.EventsBinding;
 import com.project.logic.Event;
 import com.project.logic.EventAdapter;
 
 import java.util.ArrayList;
 
-public class FirstFragment extends Fragment {
+public class EventsFragment extends Fragment {
 
-    private FragmentFirstBinding binding;
+    private EventsBinding binding;
     private ListView eventListView;
     private EventAdapter eventAdapter;
 
@@ -43,7 +43,7 @@ public class FirstFragment extends Fragment {
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-        binding = FragmentFirstBinding.inflate(inflater, container, false);
+        binding = EventsBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -61,8 +61,8 @@ public class FirstFragment extends Fragment {
         binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavHostFragment.findNavController(FirstFragment.this)
-                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
+                NavHostFragment.findNavController(EventsFragment.this)
+                        .navigate(R.id.action_eventsFragment_to_addEventFragment);
             }
         });
 
